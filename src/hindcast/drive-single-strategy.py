@@ -20,7 +20,7 @@ target_colname='USD (AM)'
 initime_str='2016-07-22'
 
 # end time
-endtime_str='2018-01-25'
+endtime_str='2018-01-24'
 
 # invest period (optional)
 invest_p=6
