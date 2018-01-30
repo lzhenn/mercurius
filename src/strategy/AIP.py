@@ -21,7 +21,7 @@ tg_name   target name (col name) in df0
 def up_in_down_out(initime_obj, outtime_obj, ini_fund, df0, tg_name, s_ratio):
     
     # parameters
-    ma_period=datetime.timedelta(days=365)
+    ma_period=datetime.timedelta(days=360)
 
 
     df_per_share=df0/s_ratio                            # target adjestment 

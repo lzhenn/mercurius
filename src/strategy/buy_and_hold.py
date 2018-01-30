@@ -44,5 +44,6 @@ def buy_and_hold(initime_obj, outtime_obj, ini_fund, df0, tg_name, s_ratio):
     for item in df_epoch:
         pt_matrix[ii,0]= pt_matrix[ii,1]*item
         ii=ii+1
-    pt[:]=pt_matrix   
+    pt[:]=pt_matrix  
+#    pt_dic = strategy_info('buy and hold', pt)
     return pt
