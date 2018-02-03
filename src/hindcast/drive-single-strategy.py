@@ -11,9 +11,9 @@ import sys
 sys.path.append('../strategy')
 sys.path.append('../utils')
 
-from buy_and_hold import buy_and_hold as strategy
+#from buy_and_hold import buy_and_hold as strategy
 #from up_in_down_out import up_in_down_out as strategy
-#from grid_trading import grid_trading as strategy
+from grid_trading import grid_trading as strategy
 from utils import parse_trading_day
 
 
@@ -52,7 +52,9 @@ def mainfunc():
     end_time_obj_new = parse_trading_day(df0.index, end_time_obj)
     print("Trading Start: "+int_time_obj_new.strftime('%y-%m-%d'))
     print("Trading End: "+end_time_obj_new.strftime('%y-%m-%d'))
-    fund_pd=strategy(int_time_obj_new, end_time_obj_new, ini_fund, df0, target_colname, r_share)
+    info_dic, fund_pd=strategy(int_time_obj_new, end_time_obj_new, ini_fund, df0, target_colname, r_share)
+
+    print(info_dic)
 
     plt.plot(fund_pd['value']+fund_pd['cash'])
     buy_point=(fund_pd['value']+fund_pd['cash'])*fund_pd['trade']

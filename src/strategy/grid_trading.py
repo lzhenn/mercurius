@@ -5,6 +5,11 @@
 import datetime
 import pandas as pd
 import numpy as np
+from buy_and_hold import buy_and_hold
+import sys
+
+sys.path.append('../utils')
+from utils import strategy_info
 
 '''------------------------
 
@@ -39,7 +44,11 @@ def grid_trading(initime_obj, outtime_obj, ini_fund, df0, tg_name, s_ratio):
     pt['cash']=ini_fund
     pt['trade']=0
     pt['cost']=0
-    
+
+    # benchmark return (buy and hold)
+    pbase=buy_and_hold(initime_obj, outtime_obj, ini_fund, df0, tg_name, s_ratio)
+    pt['base']=pbase['base']
+   
     # first position
     max_share = int(ini_fund*first_pos_ratio/ini_price_per_share)
     pt.loc[pt.index[0], 'value']=max_share*ini_price_per_share
@@ -99,7 +108,6 @@ def grid_trading(initime_obj, outtime_obj, ini_fund, df0, tg_name, s_ratio):
             pt_matrix[ii,4] = pt_matrix[ii-1,4]
         ii=ii+1
     pt[:]=pt_matrix  
-    
-  #  dic=strategy_info('grid trading', pt)
+    dic=strategy_info('grid trading', pt)
 
-    return pt
+    return dic, pt
