@@ -12,7 +12,7 @@ time_new=parse_trading_day (date.idx, time_obj)
 '''
 #-------------------------------------------------------------------------
 import datetime
-
+import numpy as np
 def parse_trading_day(date_series, time_obj):
     tdelta=datetime.timedelta(days=1)
     while not (time_obj in date_series):
@@ -36,6 +36,8 @@ pt_dic=parse_trading_day (strategy_name, pt)
 
 def strategy_info(strategy_name, pt):
     
+    trading_days_per_year=250.0
+    norisk_ratio=0.03
     delta_time=pt.index[-1]-pt.index[0]
     pt_dic={}
     np_fund=pt['value'].values+pt['cash'].values
@@ -44,18 +46,34 @@ def strategy_info(strategy_name, pt):
     pt_dic['name']=strategy_name
 
     # annualized rate of return
-    pt_dic['arr']=((np_fund[-1])/(np_fund[0])-1)/delta_time.days*250.0
+    pt_dic['arr']=((np_fund[-1])/(np_fund[0])-1)/delta_time.days*trading_days_per_year
 
     # annualized rate of return for benchmark strategy
-    pt_dic['barr']=(pt['base'][-1]/(pt['base'][0])-1)/delta_time.days*250.0
+    pt_dic['barr']=(pt['base'][-1]/(pt['base'][0])-1)/delta_time.days*trading_days_per_year
 
-    # maximum drawdown
+    # maximum drawdown and volatility
     pos=1
     maxd=0
     for value in np_fund[1:]:
         if maxd<(1-value/np_fund[0:pos].max()):
             maxd=1-value/np_fund[0:pos].max()
-        pos=pos+1
+            pos=pos+1
     pt_dic['maxd']=maxd
+
+    # volatility
+    np_vol=np.log(np_fund[1:])-np.log(np_fund[0:-1])
+    print(np_vol)
+    pt_dic['volat']=np_vol.std()*np.sqrt(trading_days_per_year)
+
+    # Sharpe Ratio
+    pt_dic['sharpe']=(pt_dic['arr']-norisk_ratio)/pt_dic['volat']
+
+    # beta
+    cov_mtx=np.cov(np_fund, pt['base'].values)
+    pt_dic['beta']=cov_mtx[1,1]/np.var(pt['base'].values)
+
+    # alpha
+    pt_dic['alpha']=(pt_dic['arr']-norisk_ratio)-pt_dic['beta']*(pt_dic['barr']-norisk_ratio)
+
 
     return pt_dic 

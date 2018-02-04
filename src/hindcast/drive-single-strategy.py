@@ -25,7 +25,7 @@ target='GOLD-LBMA'
 target_colname='USD (AM)'
 
 # start time
-initime_str='2000-01-01'
+initime_str='2011-01-01'
 
 # end time
 endtime_str='2018-01-24'
