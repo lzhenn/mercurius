@@ -1,6 +1,6 @@
 #/usr/bin/env python
 
-"Buy and hold strategy, the simplist strategy"
+"drive singel strategy, and return basic info"
 
 import datetime
 import pandas as pd

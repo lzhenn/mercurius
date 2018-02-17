@@ -5,6 +5,11 @@
 import datetime
 import pandas as pd
 import numpy as np
+import sys
+
+sys.path.append('../utils')
+from utils import strategy_info
+
 
 '''------------------------
 
@@ -46,5 +51,5 @@ def buy_and_hold(initime_obj, outtime_obj, ini_fund, df0, tg_name, s_ratio):
         ii=ii+1
     pt[:]=pt_matrix  
     pt['base']=pt['value']+pt['cash']
-#    pt_dic = strategy_info('buy and hold', pt)
-    return pt
+    pt_dic = strategy_info('buy and hold', pt)
+    return pt_dic, pt

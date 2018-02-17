@@ -46,8 +46,8 @@ def grid_trading(initime_obj, outtime_obj, ini_fund, df0, tg_name, s_ratio):
     pt['cost']=0
 
     # benchmark return (buy and hold)
-    pbase=buy_and_hold(initime_obj, outtime_obj, ini_fund, df0, tg_name, s_ratio)
-    pt['base']=pbase['base']
+    pbase, ptbase=buy_and_hold(initime_obj, outtime_obj, ini_fund, df0, tg_name, s_ratio)
+    pt['base']=ptbase['base']
    
     # first position
     max_share = int(ini_fund*first_pos_ratio/ini_price_per_share)

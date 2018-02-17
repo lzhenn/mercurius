@@ -19,10 +19,27 @@ def parse_trading_day(date_series, time_obj):
         time_obj=time_obj-tdelta
     return time_obj
 
+#-------------------------------------------------------------------------
+'''
+
+time_new=parse_trading_day_foreward (date.idx, time_obj)
+     * shift time obj foreward to the nearest trading day
+
+
+
+'''
+#-------------------------------------------------------------------------
+def parse_trading_day_foreward(date_series, time_obj):
+    tdelta=datetime.timedelta(days=1)
+    while not (time_obj in date_series):
+        time_obj=time_obj+tdelta
+    return time_obj
+
+
 
 #-------------------------------------------------------------------
 '''
-pt_dic=parse_trading_day (strategy_name, pt)
+pt_dic=strategy_info(strategy_name, pt)
     'name'          strategy name
     'arr'           annualized rate of return
     'barr'          annualized rate of return for benchmark strategy
@@ -62,7 +79,6 @@ def strategy_info(strategy_name, pt):
 
     # volatility
     np_vol=np.log(np_fund[1:])-np.log(np_fund[0:-1])
-    print(np_vol)
     pt_dic['volat']=np_vol.std()*np.sqrt(trading_days_per_year)
 
     # Sharpe Ratio
@@ -76,4 +92,20 @@ def strategy_info(strategy_name, pt):
     pt_dic['alpha']=(pt_dic['arr']-norisk_ratio)-pt_dic['beta']*(pt_dic['barr']-norisk_ratio)
 
 
-    return pt_dic 
+    return pt_dic
+
+
+#-------------------------------------------------------------------
+'''
+bias_ratio=cal_nday_bias(pt, nday)
+'''
+#-------------------------------------------------------------------
+
+def cal_nday_bias(curr_date_obj, pt, nday):
+    
+    ma_period=datetime.timedelta(days=nday)
+    ma_ref=pt.loc[curr_date_obj-ma_period:curr_date_obj].mean()
+    bias_ratio = (pt.loc[curr_date_obj]-ma_ref)/ma_ref
+    return bias_ratio
+
+ 
