@@ -38,7 +38,7 @@ def mainfunc():
                     except:
                         print('\n\nDownload %s@%s (%d) Failed...' % (symb[0], item, pos))
 
-                    sptime=random.randint(200,300)/10
+                    sptime=random.randint(20,200)/10
                     print('\nsleep %4.2fs' % sptime)
                     time.sleep(sptime)
    
