@@ -10,7 +10,7 @@ eq_path='/home/lzhenn/array/lzhenn/findata/equity'
 eq_basics_path=eq_path+'/financials'
 
 # equity list
-eq_market=['NASDAQ','ETF','AMEX','NYSE']
+eq_market=['NASDAQ','AMEX','NYSE']
 
 statement=['Metrics','Growth','Cash%20Flow','Balance%20Sheet','Income%20Statement']
 
@@ -30,7 +30,7 @@ def mainfunc():
                 symb=item0.split('.')
                 for xls_itm in statement:
                     if not(os.path.isfile(eq_basics_path+'/'+symb[0]+'_'+xls_itm+'.xlsx')):
-                        print('\n\nNow download %s@%s (%d)' % (symb[0], item, pos))
+                        print('\n\nNow download %s %s@%s (%d)' % (symb[0], xls_itm,item, pos))
                         url='https://stockrow.com/api/companies/'+symb[0]+'/financials.xlsx?dimension=MRQ&section='+xls_itm
                         try:
                             req = urllib.request.Request(url, None, headers)
@@ -40,7 +40,9 @@ def mainfunc():
                         except Exception as E:
                             print('\n'+str(E))
                             print('\n\nDownload %s@%s (%d) Failed...' % (symb[0], item, pos))
-                        sptime=random.randint(10,30)
+                            if str(E) =='HTTP Error 404: Not Found':
+                                break
+                        sptime=random.randint(200,800)/100
                         print('\nsleep %4.2fs' % sptime)
                         time.sleep(sptime)
    
