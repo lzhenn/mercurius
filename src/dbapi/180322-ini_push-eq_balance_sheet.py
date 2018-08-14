@@ -41,7 +41,9 @@ def mainfunc():
             file_path=eq_path+item0
             # Deal with the financial record
             df=pd.read_excel(file_path)
-            df=df.T//1000   # Change the unit to kdollars 
+            df=df.T//1000   # Change the unit to kdollars
+            print(df)
+            exit()
             with connection.cursor() as cursor:
                 sql = "SELECT `rhid` FROM `eq_all_basics` WHERE `symbol`=%s"
                 cursor.execute(sql, itm_symbol)
@@ -59,10 +61,7 @@ def mainfunc():
                     md5id=hashlib.md5()
                     md5id.update((itm_symbol+idx.strftime('%Y-%m-%d %H:%M:%S')).encode('utf-8'))
                     data_stream.append(md5id.hexdigest())
-                    try:
-                        cursor.execute(sql, tuple(data_stream))
-                    except:
-                        continue
+                    cursor.execute(sql, tuple(data_stream))
         
     # connection is not autocommit by default. So you must commit to save
     # your changes.

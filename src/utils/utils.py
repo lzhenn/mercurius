@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 
 "Utilities for the trading system"
+
+import datetime
+import numpy as np
+import hashlib
+
 #-------------------------------------------------------------------------
 '''
 
@@ -11,8 +16,6 @@ time_new=parse_trading_day (date.idx, time_obj)
 
 '''
 #-------------------------------------------------------------------------
-import datetime
-import numpy as np
 def parse_trading_day(date_series, time_obj):
     tdelta=datetime.timedelta(days=1)
     while not (time_obj in date_series):
@@ -108,4 +111,14 @@ def cal_nday_bias(curr_date_obj, pt, nday):
     bias_ratio = (pt.loc[curr_date_obj]-ma_ref)/ma_ref
     return bias_ratio
 
+ #-------------------------------------------------------------------
+'''
+unique_id=md5_unique(string)
+'''
+#-------------------------------------------------------------------
+
+def md5_unique(string):
+     md5id=hashlib.md5()
+     md5id.update(string.encode('utf-8'))
+     return md5id.hexdigest()
  

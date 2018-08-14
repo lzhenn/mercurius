@@ -18,7 +18,7 @@ eq_market=['NASDAQ','ETF','AMEX','NYSE']
 def mainfunc():
 
     headers = { 'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.360' }
-    ii=100
+    ii=0
     while 1:
         fn='/instrument_%03d.json' % ii
         json_str=open(eq_path+'/'+fn).read()
@@ -44,8 +44,8 @@ def mainfunc():
                
         symblist=[]
         sptime=random.randint(100,300)/10
-        print('\nsleep %4.2fs' % sptime)
-        time.sleep(sptime)
+        #print('\nsleep %4.2fs' % sptime)
+        #time.sleep(sptime)
         
 
 if __name__ == '__main__':

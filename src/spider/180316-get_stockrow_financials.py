@@ -44,7 +44,7 @@ def mainfunc():
                                 break
                         sptime=random.randint(200,800)/100
                         print('\nsleep %4.2fs' % sptime)
-                        time.sleep(sptime)
+                        #time.sleep(sptime)
    
 if __name__ == '__main__':
     mainfunc()
