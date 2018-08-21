@@ -15,13 +15,13 @@ from pandas_datareader import data as pdr
 
 # equity path
 eq_path='/home/lzhenn/array/lzhenn/findata/equity/'
-eq_com_path=eq_path+'compliment/'
+eq_com_path=eq_path+'compliment1808/'
 # equity list
 eq_market=['NASDAQ','ETF','AMEX','NYSE']
 
 
 ini_time='2018-02-02'
-end_time='2018-02-28'
+end_time='2018-08-18'
 
 int_time_obj = datetime.datetime.strptime(ini_time, '%Y-%m-%d')
 end_time_obj = datetime.datetime.strptime(end_time, '%Y-%m-%d')
@@ -52,7 +52,7 @@ def mainfunc():
             fsize = os.path.getsize(eq_com_path+item0)
             print('\n%s downloaded! With size:%8d:' % (item0,fsize))
             
-            sptime=random.randint(100,300)/10
+            sptime=random.randint(100,500)/100
             print('\nsleep %4.2fs' % sptime)
             time.sleep(sptime)
 

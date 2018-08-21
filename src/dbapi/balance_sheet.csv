@@ -1,0 +1,28 @@
+issued_date,   Balance Sheet Issued Date                        
+cash_equiv,    Cash and Equivalents                 
+invest_curr,   Investments Current                  
+cash_st_invest,Cash and Short Term Investments      
+receivables,   Trade and Non-Trade Receivables      
+inventory,     Inventory                           
+curr_ast,      Current Assets                       
+ppe_net,       Property, Plant & Equipment Net      
+goodwill,      Goodwill and Intangible Assets       
+invst_ncurr,   Investments Non-Current              
+tax_ast,       Tax Assets                           
+ast_ncurr,     Assets Non-Current                   
+total_ast,     Total Assets                          
+payables,      Trade and Non-Trade Payables          
+debt_curr,     Debt Current                          
+curr_liab,     Current Liabilities                   
+debt_ncurr,    Debt Non-Current                      
+total_debt,    Total Debt                            
+def_revenue,   Deferred Revenue                      
+tax_liab,      Tax Liabilities                       
+dep_liab,      Deposit Liabilities                   
+liab_ncurr,    Liabilities Non-Current               
+total_liab,    Total Liabilities                     
+other_income,  Accumulated Other Comprehensive Income  
+ret_earning,   Accumulated Retained Earnings (Deficit) 
+equity,        Shareholders Equity (Deficit)           
+invest,        Investments (Deficit)                   
+
