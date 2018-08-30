@@ -14,14 +14,14 @@ tg_name   target name (col name) in df0
  mtx[0]    pt['value']    total share value
  mtx[1]   pt['share']    total share
  mtx[2]   pt['cash']     cash in hand
- mtx[3]   pt['trade']    -1 sell; -2 empty; 1 buy; 0 hold
+ mtx[3]   pt['trade']    -1 sell; 1 buy; 0 hold/empty
  mtx[4]   pt['cost']     average cost
 
 '''
 def up_in_down_out(initime_obj, outtime_obj, ini_fund, df0, tg_name, s_ratio):
     
     # parameters
-    ma_period=datetime.timedelta(days=365)
+    ma_period=datetime.timedelta(days=-365)
 
 
     df_per_share=df0/s_ratio                            # target adjestment 
@@ -43,8 +43,8 @@ def up_in_down_out(initime_obj, outtime_obj, ini_fund, df0, tg_name, s_ratio):
     ii=0
     for item in df_epoch:
         date_now=df_epoch.index[ii]
-        ma_ref=df_epoch.loc[date_now-ma_period:date_now].mean()
-        if (item >= ma_ref) and (ii>0):   # current price > MA indicator
+        ma_ref=df_per_share.loc[date_now+ma_period:date_now].mean()
+        if (item >= ma_ref):   # current price > MA indicator
             if pt_matrix[ii-1,1] == 0:    # empty position
                 # All in
                 max_share = int(pt_matrix[ii-1,2]/item)
@@ -61,10 +61,10 @@ def up_in_down_out(initime_obj, outtime_obj, ini_fund, df0, tg_name, s_ratio):
                 pt_matrix[ii,3] = 0
                 pt_matrix[ii,4] = pt_matrix[ii-1,4]
                 
-        elif (item < ma_ref) and (ii>0):
+        elif (item < ma_ref*0.99):
             if (pt_matrix[ii-1,1] == 0):    # empty position
                 pt_matrix[ii,2] = pt_matrix[ii-1,2]
-                pt_matrix[ii,3] = -2
+                pt_matrix[ii,3] = 0
                 pt_matrix[ii,4] = pt_matrix[ii-1,4]
             else:
                 # All out
@@ -73,8 +73,14 @@ def up_in_down_out(initime_obj, outtime_obj, ini_fund, df0, tg_name, s_ratio):
                 pt_matrix[ii,2] = pt_matrix[ii-1,2]+pt_matrix[ii-1,1]*item
                 pt_matrix[ii,3] = -1
                 pt_matrix[ii,4] = pt_matrix[ii-1,4]
+        elif (ii>0):
+            # Hold
+            pt_matrix[ii,1] = pt_matrix[ii-1,1]
+            pt_matrix[ii,0] = pt_matrix[ii,1]*item
+            pt_matrix[ii,2] = pt_matrix[ii-1,2]
+            pt_matrix[ii,3] = 0
+            pt_matrix[ii,4] = pt_matrix[ii-1,4]
+
         ii=ii+1
     pt[:]=pt_matrix   
-    pbase=buy_and_hold(initime_obj, outtime_obj, ini_fund, df0, tg_name, s_ratio)
-    pt['base']=pbase['base']
     return pt
