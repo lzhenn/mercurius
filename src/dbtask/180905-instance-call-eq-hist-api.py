@@ -19,8 +19,8 @@ df0       dataframe for the target
 
 def get_us_eq_hist():
     # search bbid
-    bbid_dic=mc_dbapi.fetch_bbid('STO')
-    print(mc_dbapi.fetch_ohlc(bbid_dic['bbid'],'20180304','20180905'))
-        
+    bbid_dic=mc_dbapi.fetch_bbid('QQQ')
+    df=mc_dbapi.fetch_ohlc(bbid_dic['bbid'],'20180304','20180905')
+    print(df[['close']]) 
 if __name__=='__main__':
     get_us_eq_hist()
