@@ -19,14 +19,8 @@ df0       dataframe for the target
 
 def get_us_eq_hist():
     # search bbid
-    with mc_dbapi.connection.cursor() as cursor:
-        sql = "SELECT bbid FROM `eq_symbol_id_name` WHERE `symbol`=%s"
-        cursor.execute(sql, "AAPL")
-        result = cursor.fetchone()
-    if result is None:
-        print('failed!')
-    else:    
-        print(result)
-        print(const.MERC_ROOT)
+    bbid_dic=mc_dbapi.fetch_bbid('STO')
+    print(mc_dbapi.fetch_ohlc(bbid_dic['bbid'],'20180304','20180905'))
+        
 if __name__=='__main__':
     get_us_eq_hist()

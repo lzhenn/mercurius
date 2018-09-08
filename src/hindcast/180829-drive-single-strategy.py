@@ -52,6 +52,8 @@ def mainfunc():
     end_time_obj_new = parse_trading_day(df0.index, end_time_obj)
     print("Trading Start: "+int_time_obj_new.strftime('%y-%m-%d'))
     print("Trading End: "+end_time_obj_new.strftime('%y-%m-%d'))
+    print(df0)
+    exit()
     fund_pd=strategy(int_time_obj_new, end_time_obj_new, ini_fund, df0, target_colname, r_share)
 
 
