@@ -9,7 +9,6 @@ import numpy as np
 '''------------------------
 
 df0       dataframe for the target
-tg_name   target name (col name) in df0
 
  mtx[0]    pt['value']    total share value
  mtx[1]   pt['share']    total share
@@ -18,8 +17,19 @@ tg_name   target name (col name) in df0
  mtx[4]   pt['cost']     average cost
 
 '''
-def up_in_down_out(initime_obj, outtime_obj, ini_fund, df0, tg_name, s_ratio):
+def up_in_down_out(initime_obj, outtime_obj, ini_fund, df0, s_ratio):
     
+    """
+    Args:
+        * initime_obj (datetime.datetime): initial time obj for driving the strategy
+        * outtime_obj (datetime.datetime): final time obj for driving the strategy
+        * ini_fund (float): initial fund
+        * df0 (pandas.dataframe): price timeseries of the atarget
+        * s_ratio (float): folding ratio between the object and the target. for example, 
+        the gold price is 1322$/oz. However, the target is GLD, and the GLD price is
+        123$/share, therefore. s_ratio=1322/123. Typically, s_ratio=1.0
+    """
+    df0.columns=['value']
     # parameters
     ma_period=datetime.timedelta(days=-365)
 
@@ -41,10 +51,10 @@ def up_in_down_out(initime_obj, outtime_obj, ini_fund, df0, tg_name, s_ratio):
     # copy data for quick calculation
     pt_matrix=pt.values
     ii=0
-    for item in df_epoch:
+    for item in df_epoch['value']:
         date_now=df_epoch.index[ii]
-        ma_ref=df_per_share.loc[date_now+ma_period:date_now].mean()
-        if (item >= ma_ref):   # current price > MA indicator
+        ma_ref=df_per_share.loc[date_now+ma_period:date_now]['value'].mean()
+        if (item >= 1.01*ma_ref):   # current price > MA indicator
             if pt_matrix[ii-1,1] == 0:    # empty position
                 # All in
                 max_share = int(pt_matrix[ii-1,2]/item)

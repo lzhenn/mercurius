@@ -16,5 +16,6 @@ const=_const()
 # define const
 const.MERC_ROOT='/home/lzhenn/workspace/mercurius'
 const.UTILS_PATH=const.MERC_ROOT+'/src/utils'
+const.CFG_TARGET_FILE=const.MERC_ROOT+'/config_files/config_targets.json'
 
 
