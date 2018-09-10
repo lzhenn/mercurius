@@ -37,24 +37,32 @@ class strategy_pkg(object):
         self.obj_date1=datetime.datetime.strptime(strategy_end_time,'%Y%m%d')
         self.df=df
 
+    def hindcast_buy_and_hold(self):
+        from buy_and_hold import buy_and_hold as strategy
+               
+        self.reffundflow=strategy(self.obj_date0, self.obj_date1, self.init_fund, self.df, 1.0)
+    
     def hindcast_up_in_down_out(self):
         from up_in_down_out import up_in_down_out as strategy
-               
+        
+        self.strategy_name='Up In & Down Out'
         self.fundflow=strategy(self.obj_date0, self.obj_date1, self.init_fund, self.df, 1.0)
+        self.hindcast_buy_and_hold()
 
-
-
+    
     def plot_funding_curve(self):
-        plt.plot(self.fundflow['value']+self.fundflow['cash'])
+        ax = plt.subplot(111)
+        plt.plot(self.reffundflow['value']+self.reffundflow['cash'], '-', color='gray', alpha=0.8, label='Buy & Hold')
+        plt.title('Funding curve')
+        plt.plot(self.fundflow['value']+self.fundflow['cash'], '-', color='blue', label=self.strategy_name)
         buy_point=(self.fundflow['value']+self.fundflow['cash'])*self.fundflow['trade']
         buy_point=buy_point[buy_point>0]
-        plt.plot(buy_point, 'o', mfc='red')
-
-        sell_point=(self.fundflow['value']+self.fundflow['cash'])*(-1)*self.fundflow['trade']
-        sell_point=sell_point[sell_point>0]
-        plt.plot(sell_point, 'o', mfc='blue')
-     
-        plt.title('Funding curve')
+        plt.plot(buy_point, 'o', color='darkgreen', alpha=0.8, label='buy point')
+        sell_point=(self.fundflow['value']+self.fundflow['cash'])*self.fundflow['trade']
+        sell_point=sell_point[sell_point<0]
+        sell_point=-sell_point
+        plt.plot(sell_point, 'o', color='red', alpha=0.8, label='sell point')
+        plt.grid(True)
+        plt.legend(loc='best', ncol=2 )
         plt.show()
-        
 

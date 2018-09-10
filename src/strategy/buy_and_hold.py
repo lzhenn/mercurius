@@ -14,7 +14,6 @@ from utils import strategy_info
 '''------------------------
 
 df0       dataframe for the target
-tg_name   target name (col name) in df0
 
     pt['value']    total share value
     pt['share']    total share
@@ -23,7 +22,7 @@ tg_name   target name (col name) in df0
     pt['cost']     average cost
 
 '''
-def buy_and_hold(initime_obj, outtime_obj, ini_fund, df0, tg_name, s_ratio):
+def buy_and_hold(initime_obj, outtime_obj, ini_fund, df0, s_ratio):
     
     df_per_share=df0/s_ratio  # timeseries of our target
     ini_price_per_share=df_per_share.loc[initime_obj]
@@ -37,7 +36,7 @@ def buy_and_hold(initime_obj, outtime_obj, ini_fund, df0, tg_name, s_ratio):
     # build output
     pt = pd.DataFrame(df_epoch.values, index=df_epoch.index, columns=['value'])
     pt['share']=max_share
-    pt['cash']=ini_cash
+    pt['cash']=ini_cash.value
     pt['trade']=0
     pt['cost']=ini_price_per_share
  
@@ -46,10 +45,8 @@ def buy_and_hold(initime_obj, outtime_obj, ini_fund, df0, tg_name, s_ratio):
     # copy data for quick calculation
     pt_matrix=pt.values
     ii=0
-    for item in df_epoch:
+    for item in df_epoch.values:
         pt_matrix[ii,0]= pt_matrix[ii,1]*item
         ii=ii+1
     pt[:]=pt_matrix  
-    pt['base']=pt['value']+pt['cash']
-    pt_dic = strategy_info('buy and hold', pt)
-    return pt_dic, pt
+    return pt
