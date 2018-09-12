@@ -73,6 +73,7 @@ class _dbapi:
         # extract desired frames
         df['trading_date']=pd.to_datetime(df['trading_date'])
         df=df.set_index('trading_date')
+        df['middle']=(df['close']+df['open']+df['high']+df['low'])/4
         return df.loc[start_date:end_date]
 
 mc_dbapi=_dbapi()

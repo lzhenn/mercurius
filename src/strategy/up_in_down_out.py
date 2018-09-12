@@ -54,7 +54,7 @@ def up_in_down_out(initime_obj, outtime_obj, ini_fund, df0, s_ratio):
     for item in df_epoch['value']:
         date_now=df_epoch.index[ii]
         ma_ref=df_per_share.loc[date_now+ma_period:date_now]['value'].mean()
-        if (item >= 1.01*ma_ref):   # current price > MA indicator
+        if (item >= ma_ref):   # current price > MA indicator
             if pt_matrix[ii-1,1] == 0:    # empty position
                 # All in
                 max_share = int(pt_matrix[ii-1,2]/item)
@@ -71,7 +71,7 @@ def up_in_down_out(initime_obj, outtime_obj, ini_fund, df0, s_ratio):
                 pt_matrix[ii,3] = 0
                 pt_matrix[ii,4] = pt_matrix[ii-1,4]
                 
-        elif (item < ma_ref*0.99):
+        elif (item < ma_ref):
             if (pt_matrix[ii-1,1] == 0):    # empty position
                 pt_matrix[ii,2] = pt_matrix[ii-1,2]
                 pt_matrix[ii,3] = 0

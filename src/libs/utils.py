@@ -18,7 +18,7 @@ time_new=parse_trading_day (date.idx, time_obj)
 #-------------------------------------------------------------------------
 def parse_trading_day(date_series, time_obj):
     tdelta=datetime.timedelta(days=1)
-    while not (time_obj in date_series):
+    while not (time_obj.date() in date_series):
         time_obj=time_obj-tdelta
     return time_obj
 

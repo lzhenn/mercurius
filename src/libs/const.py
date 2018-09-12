@@ -1,5 +1,7 @@
 #coding:utf-8
 
+import json
+
 class _const:
     class ConstError(TypeError): pass
     class ConstCaseError(ConstError): pass
@@ -13,9 +15,16 @@ class _const:
 
 const=_const() 
 
-# define const
-const.MERC_ROOT='/home/lzhenn/workspace/mercurius'
+with open ('../../config_files/basic_info.json','r') as f:
+    tgt_json=json.load(f)
+
+# define const for PATH
+const.MERC_ROOT=tgt_json['MERC_ROOT']
 const.UTILS_PATH=const.MERC_ROOT+'/src/utils'
 const.CFG_TARGET_FILE=const.MERC_ROOT+'/config_files/config_targets.json'
+const.CFG_PORTFOLIO_FILE=const.MERC_ROOT+'/config_files/daily_portfolio_routine.json'
 
 
+# define const for the MARKET
+const.NO_RISK_RETURN=tgt_json['NO_RISK_RETURN']
+const.TRAD_DAYS_PER_YEAR=tgt_json['TRAD_DAYS_PER_YEAR']
