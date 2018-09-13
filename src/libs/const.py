@@ -15,7 +15,7 @@ class _const:
 
 const=_const() 
 
-with open ('../../config_files/basic_info.json','r') as f:
+with open ('/home/lzhenn/workspace/mercurius/config_files/basic_info.json','r') as f:
     tgt_json=json.load(f)
 
 # define const for PATH

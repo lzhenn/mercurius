@@ -11,11 +11,14 @@ This class is the motherboard for any hindcastable strategy.
 import datetime
 import pandas as pd
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+from const import const
 import sys
 
-sys.path.append('../strategy')
-
+sys.path.append(const.MERC_ROOT+'/src/strategy')
+plt.ioff()
 class strategy_pkg(object):
     """
     Args:
@@ -74,19 +77,19 @@ class strategy_pkg(object):
                 'alpha'         alpha
                 'beta'          beta
                 
-                '1monr'         1 month return (%)
-                '3monr'         3 month return (%)
-                '6monr'         6 month return (%)
-                '1yrr'          1 year return (%)
-                '3yrr'          3 year return (%)
-                '5yrr'          5 year return (%)
+                'r1m'         1 month return (%)
+                'r3m'         3 month return (%)
+                'r6m'         6 month return (%)
+                'r1y'          1 year return (%)
+                'r3y'          3 year return (%)
+                'r5y'          5 year return (%)
 
-                '1monr_ref'     1 month return (%)
-                '3monr_ref'     3 month return (%)
-                '6monr_ref'     6 month return (%)
-                '1yrr_ref'      1 year return (%)
-                '3yrr_ref'      3 year return (%)
-                '5yrr_ref'      5 year return (%)
+                'r1m_ref'     1 month return (%)
+                'r3m_ref'     3 month return (%)
+                'r6m_ref'     6 month return (%)
+                'r1y_ref'      1 year return (%)
+                'r3y_ref'      3 year return (%)
+                'r5y_ref'      5 year return (%)
 
                 'action'        buy (X%) / sell (Y%) / hold (Z%)
                 'bias365'       % departure relative to the yearly refrence line
@@ -166,9 +169,11 @@ class strategy_pkg(object):
         
         # 1 year return (%)
         day365ago=parse_trading_day(self.fundflow.index,self.data_end_time+datetime.timedelta(days=-365))
-        self.info['r1y']=ref_fund[-1]/self.reffundflow['value'].loc[day365ago.date()]-1
+        self.info['r1y']=np_fund[-1]/(self.fundflow['value'].loc[day365ago.date()]+self.fundflow['cash'].loc[day365ago.date()])-1
 
-
+        # 1 year return
+        self.info['r1y_ref']=ref_fund[-1]/(self.reffundflow['value'].loc[day365ago.date()])-1
+        
         # departure 365day
         ma_ref=self.reffundflow.loc[day365ago.date():]['value'].mean()
         self.info['bias365']=(ref_fund[-1]-ma_ref)/ma_ref
@@ -177,7 +182,7 @@ class strategy_pkg(object):
     def plot_funding_curve(self):
         ax = plt.subplot(111)
         plt.plot(self.reffundflow['value']+self.reffundflow['cash'], '-', color='gray', alpha=0.8, label='Buy & Hold')
-        plt.title('Funding curve')
+        plt.title(self.target_name+' Funding curve')
         plt.plot(self.fundflow['value']+self.fundflow['cash'], '-', color='blue', label=self.strategy_name)
         buy_point=(self.fundflow['value']+self.fundflow['cash'])*self.fundflow['trade']
         buy_point=buy_point[buy_point>0]
