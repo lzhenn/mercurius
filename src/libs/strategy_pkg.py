@@ -166,7 +166,7 @@ class strategy_pkg(object):
         
         # 1 year return (%)
         day365ago=parse_trading_day(self.fundflow.index,self.data_end_time+datetime.timedelta(days=-365))
-        self.info['1yrr']=ref_fund[-1]/self.reffundflow['value'].loc[day365ago.date()]-1
+        self.info['r1y']=ref_fund[-1]/self.reffundflow['value'].loc[day365ago.date()]-1
 
 
         # departure 365day
