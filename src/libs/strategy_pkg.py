@@ -77,19 +77,22 @@ class strategy_pkg(object):
                 'alpha'         alpha
                 'beta'          beta
                 
-                'r1m'         1 month return (%)
-                'r3m'         3 month return (%)
-                'r6m'         6 month return (%)
-                'r1y'          1 year return (%)
-                'r3y'          3 year return (%)
-                'r5y'          5 year return (%)
+                'r1m'           1 month return (%)
+                'r3m'           3 month return (%)
+                'r6m'           6 month return (%)
+                'r1y'           1 year return (%)
+                'r3y'           3 year return (%)
+                'r5y'           5 year return (%)
 
-                'r1m_ref'     1 month return (%)
-                'r3m_ref'     3 month return (%)
-                'r6m_ref'     6 month return (%)
-                'r1y_ref'      1 year return (%)
-                'r3y_ref'      3 year return (%)
-                'r5y_ref'      5 year return (%)
+                'r1m_ref'       1 month return (%)
+                'r3m_ref'       3 month return (%)
+                'r6m_ref'       6 month return (%)
+                'r1y_ref'       1 year return (%)
+                'r3y_ref'       3 year return (%)
+                'r5y_ref'       5 year return (%)
+
+                'move1'         1-day momentum (+/-/o)
+                
 
                 'action'        buy (X%) / sell (Y%) / hold (Z%)
                 'bias365'       % departure relative to the yearly refrence line
@@ -166,7 +169,16 @@ class strategy_pkg(object):
             self.info['action']='Buy! ({:.2%})'.format(1-position)
         else:
             self.info['action']='Sell! ({:.2%})'.format(position)
-        
+       
+        # 1-day momentum
+        diff_day1=ref_fund[-1]-ref_fund[-2]
+        if (diff_day1>0):
+            self.info['move1']='+'
+        elif (diff_day1<0):
+            self.info['move1']='-'
+        else:
+            self.info['move1']='o'
+
         # 1 year return (%)
         day365ago=parse_trading_day(self.fundflow.index,self.data_end_time+datetime.timedelta(days=-365))
         self.info['r1y']=np_fund[-1]/(self.fundflow['value'].loc[day365ago.date()]+self.fundflow['cash'].loc[day365ago.date()])-1
