@@ -27,4 +27,5 @@ const.CFG_PORTFOLIO_FILE=const.MERC_ROOT+'/config_files/daily_portfolio_routine.
 
 # define const for the MARKET
 const.NO_RISK_RETURN=tgt_json['NO_RISK_RETURN']
+const.US_AVG_DIV=tgt_json['US_AVG_DIV']
 const.TRAD_DAYS_PER_YEAR=tgt_json['TRAD_DAYS_PER_YEAR']

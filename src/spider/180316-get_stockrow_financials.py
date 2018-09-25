@@ -42,9 +42,9 @@ def mainfunc():
                             print('\n\nDownload %s@%s (%d) Failed...' % (symb[0], item, pos))
                             if str(E) =='HTTP Error 404: Not Found':
                                 break
-                        sptime=random.randint(200,800)/100
+                        sptime=random.randint(200,300)/10
                         print('\nsleep %4.2fs' % sptime)
-                        #time.sleep(sptime)
+                        time.sleep(sptime)
    
 if __name__ == '__main__':
     mainfunc()
