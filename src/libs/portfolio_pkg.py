@@ -89,32 +89,37 @@ class portfolio_pkg(object):
             from buy_and_hold import buy_and_hold as strategy
 
         self.obj_date0=parse_trading_day(self.df.index, self.obj_date0)
-        self.obj_date1=parse_trading_day(self.df.index, self.obj_date1) # end date
+        #self.obj_date1=parse_trading_day(self.df.index, self.obj_date1) # end date
        
         # Initialize the first adjustment cycle
         adj_date_obj0=self.obj_date0
         adj_date_obj1=adj_date_obj0+datetime.timedelta(days=self.pos_adj_cycle)
-        
+        adj_date_obj1=parse_trading_day(self.df.index,adj_date_obj1)
         adj_total_fund=self.init_fund
         
         self.df['total_cash']=0.0
         self.df['total_eq']=0.0
         self.df['interest']=0.0
         self.df['total_value']=0.0
-
+        
+        for tgt in self.target_names:
+            self.info[tgt]['fundflow']=pd.DataFrame()
+        
         while adj_date_obj1 < self.obj_date1:  # till end time
             
             for tgt in self.target_names:
-                self.info[tgt]['fundflow']=strategy(adj_date_obj0, adj_date_obj1, adj_total_fund*self.info[tgt]['alloc'], self.df.loc[:adj_date_obj1,[tgt]], 1.0)
-                self.adjust_postion()
+                df=strategy(adj_date_obj0, adj_date_obj1, adj_total_fund*self.info[tgt]['alloc'], self.df.loc[:adj_date_obj1,[tgt]], 1.0)
+                self.info[tgt]['fundflow']=self.info[tgt]['fundflow'].append(df)
+                self.adjust_position()
+            
             self.get_portfolio_track()
             
             adj_date_obj0=adj_date_obj1
             adj_date_obj1=adj_date_obj1+datetime.timedelta(days=self.pos_adj_cycle)
-
-    def adjust_position(self):
-        print(self.info[tgt]['fundflow'])
+            adj_date_obj1=parse_trading_day(self.df.index,adj_date_obj1)
     
+    def adjust_position(self):
+        pass 
     
     def get_portfolio_track(self):
         
@@ -137,7 +142,6 @@ class portfolio_pkg(object):
         norisk_ratio=const.NO_RISK_RETURN
         trading_days_per_year=const.TRAD_DAYS_PER_YEAR
         for tgt in self.target_names:
-            delta_time=self.info[tgt]['fundflow'].index[-1]-self.info[tgt]['fundflow'].index[0]
             self.df['total_cash']=self.df['total_cash']+self.info[tgt]['fundflow']['cash']      
             self.df['total_eq']=self.df['total_eq']+self.info[tgt]['fundflow']['value']      
             self.df['interest']=((norisk_ratio+1)**(1.0/trading_days_per_year)-1)*self.df['total_cash']
