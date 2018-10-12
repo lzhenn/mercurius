@@ -23,7 +23,7 @@ def mainfunc():
 
     web_dic={}
     ii=0
-    for tgt in tgt_json['symbols']:
+    for tgt in tgt_json['self_selected']:
         ii=ii+1
         print(tgt)    
         bbid_dic=mc_dbapi.fetch_bbid(tgt)
@@ -37,9 +37,9 @@ def mainfunc():
         web_dic['target'+str(ii)]=obj_strategy.info
         
         obj_strategy.plot_funding_curve()
-        plt.savefig(const.MERC_ROOT+'/routine_output/'+tgt+'.png')
+        plt.savefig(const.ROUTINE_REPO+'/'+tgt+'.png')
         plt.close()
-    with open(const.MERC_ROOT+'/routine_output/routine_info.json','w') as f:
+    with open(const.ROUTINE_REPO+'/routine_info.json','w') as f:
         json.dump(web_dic,f)
 
 if __name__ == '__main__':
