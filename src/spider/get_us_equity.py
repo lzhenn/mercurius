@@ -6,19 +6,19 @@ import pandas as pd
 import numpy as np
 import datetime 
 import yahoo_finance
-import fix_yahoo_finance as yf
+import yfinance as yf
 import time
 import random
 from pandas_datareader import data as pdr
 
 
 # equity path
-eq_path='/home/lzhenn/array/lzhenn/findata/equity/'
+eq_path='/disk/hq247/yhuangci/lzhenn/findata/equity/'
 # equity list
 eq_market=['NASDAQ','ETF','AMEX','NYSE']
 
-ini_time='1900-01-01'
-end_time='2018-02-02'
+ini_time='1949-01-01'
+end_time='2019-10-04'
 
 int_time_obj = datetime.datetime.strptime(ini_time, '%Y-%m-%d')
 end_time_obj = datetime.datetime.strptime(end_time, '%Y-%m-%d')
